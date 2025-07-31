@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:speechtotext/screens/auth_service.dart';
 import 'package:speechtotext/screens/task_list_page.dart';
-import 'package:speechtotext/screens/speech_to_text.dart';
+
+// Note: The import for TaskFormPage is no longer needed here
+// import 'package:speechtotext/screens/speech_to_text.dart';
 
 class StatusCardInfo {
   final String title;
@@ -61,19 +63,12 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      // The AppBar now correctly inherits its style from the theme in main.dart
       appBar: AppBar(
         title: const Text('Home'),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.add),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const TaskFormPage()),
-              ).then((_) => setState(() {}));
-            },
-          ),
-        ],
+        // The redundant '+' button in the actions list has been removed.
+        // The main '+' button is the FloatingActionButton in main_scaffold.dart
+        actions: const [],
       ),
       body: RefreshIndicator(
         onRefresh: () async => setState(() {}),
