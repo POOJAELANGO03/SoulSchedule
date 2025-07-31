@@ -1,45 +1,48 @@
 import 'package:flutter/foundation.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:cloud_firestore/cloud_firestore.dart'; // Import Firestore
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
+
+// Custom exception for better error handling in the UI
+class GoogleSignInException implements Exception {
+  final String message;
+  GoogleSignInException(this.message);
+
+  @override
+  String toString() => message;
+}
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  final FirebaseFirestore _firestore = FirebaseFirestore.instance; // Add Firestore instance
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
-  // Get current user
   User? get currentUser => _auth.currentUser;
 
-  // Auth state changes stream
   Stream<User?> get authStateChanges => _auth.authStateChanges();
 
-  // --- Updated method to add user data to Firestore ---
   Future<void> _addUserToFirestore(User user, {String? displayName}) async {
     final userDoc = _firestore.collection('Users').doc(user.uid);
     final snapshot = await userDoc.get();
 
-    // Only create the document if it doesn't already exist
     if (!snapshot.exists) {
       await userDoc.set({
         'uid': user.uid,
         'email': user.email,
-        // Use the passed displayName for email signups, or the one from the User object for Google Sign-In
         'displayName': displayName ?? user.displayName,
         'photoURL': user.photoURL,
-        'createdAt': DateTime.now(),
+        'createdAt': FieldValue.serverTimestamp(),
       });
     }
   }
 
-  // Sign in with email and password
   Future<User?> signInWithEmail(String email, String password) async {
     try {
       final UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
-      // No need to add user here, as they would have been added at signup
       return result.user;
     } on FirebaseAuthException catch (e) {
       debugPrint('Failed to sign in with Email & Password: ${e.message}');
@@ -47,7 +50,6 @@ class AuthService {
     }
   }
 
-  // --- Updated Sign up with email and password to accept a displayName ---
   Future<User?> signUpWithEmail(String email, String password, String displayName) async {
     try {
       final UserCredential result = await _auth.createUserWithEmailAndPassword(
@@ -55,10 +57,7 @@ class AuthService {
         password: password,
       );
       if (result.user != null) {
-        // Update the user's profile in Firebase Auth
         await result.user!.updateDisplayName(displayName);
-
-        // After creating the user, add their data to Firestore, passing the name
         await _addUserToFirestore(result.user!, displayName: displayName);
       }
       return result.user;
@@ -68,16 +67,15 @@ class AuthService {
     }
   }
 
-  // Sign in with Google
   Future<User?> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
       if (googleUser == null) {
+        // User canceled the sign-in flow.
         return null;
       }
 
-      final GoogleSignInAuthentication googleAuth =
-      await googleUser.authentication;
+      final GoogleSignInAuthentication googleAuth = await googleUser.authentication;
       final AuthCredential credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken,
         idToken: googleAuth.idToken,
@@ -86,17 +84,23 @@ class AuthService {
       final UserCredential result = await _auth.signInWithCredential(credential);
 
       if (result.user != null) {
-        // For Google sign-in, the displayName is already part of the user object
         await _addUserToFirestore(result.user!);
       }
       return result.user;
+    } on PlatformException catch (e) {
+      // This is a common error for misconfiguration.
+      debugPrint('Google Sign-In PlatformException: ${e.code} - ${e.message}');
+      throw GoogleSignInException(
+          'Google Sign-In Error. Please check your app configuration (e.g., SHA-1 fingerprint in Firebase) and network connection. Error code: ${e.code}');
     } on FirebaseAuthException catch (e) {
-      debugPrint('Failed to sign in with Google: ${e.message}');
-      return null;
+      debugPrint('Google Sign-In FirebaseAuthException: ${e.code} - ${e.message}');
+      throw GoogleSignInException('Firebase authentication failed. ${e.message}');
+    } catch (e) {
+      debugPrint('An unexpected error occurred during Google Sign-In: $e');
+      throw GoogleSignInException('An unexpected error occurred. Please try again.');
     }
   }
 
-  // Sign out
   Future<void> signOut() async {
     try {
       await _googleSignIn.signOut();
