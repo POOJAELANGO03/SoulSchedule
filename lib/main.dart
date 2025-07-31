@@ -3,9 +3,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:speechtotext/screens/login_page.dart';
+// --- THIS LINE HAS BEEN FIXED ---
 import 'package:speechtotext/screens/main_scaffold.dart';
-// The import for splashScreen is no longer needed.
-
+// ---------------------------------
 import 'firebase_options.dart';
 
 void main() async {

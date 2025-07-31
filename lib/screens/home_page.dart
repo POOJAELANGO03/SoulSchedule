@@ -87,11 +87,12 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   final Map<String, int>? counts = snapshot.data;
 
+                  // --- CHANGE 1: Updated to a new mild color palette ---
                   final cardData = [
-                    StatusCardInfo(title: 'To Do', icon: Icons.pending_actions, color: const Color(0xFF8BA9D8), count: counts?['To Do']),
-                    StatusCardInfo(title: 'In Progress', icon: Icons.sync, color: const Color(0xFF8A7B94), count: counts?['In Progress']),
-                    StatusCardInfo(title: 'Done', icon: Icons.check_circle, color: const Color(0xFF99B89A), count: counts?['Done']),
-                    StatusCardInfo(title: 'Deleted', icon: Icons.delete_forever, color: const Color(0xFFD48E8E), count: counts?['Deleted'], isArchived: true),
+                    StatusCardInfo(title: 'To Do', icon: Icons.pending_actions, color: const Color(0xFFAEC6CF), count: counts?['To Do']),
+                    StatusCardInfo(title: 'In Progress', icon: Icons.sync, color: const Color(0xFFFFDAB9), count: counts?['In Progress']),
+                    StatusCardInfo(title: 'Done', icon: Icons.check_circle, color: const Color(0xFFB9E2A8), count: counts?['Done']),
+                    StatusCardInfo(title: 'Deleted', icon: Icons.delete_forever, color: const Color(0xFFFFB6C1), count: counts?['Deleted'], isArchived: true),
                   ];
 
                   return GridView.builder(
@@ -160,6 +161,8 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
   @override
   Widget build(BuildContext context) {
     final count = widget.cardInfo.count;
+    // --- CHANGE 2: Text and icon color changed to dark gray for readability ---
+    const Color textColor = Color(0xFF37474F);
 
     return GestureDetector(
       onTapDown: (_) => _onPress(true),
@@ -191,15 +194,15 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(widget.cardInfo.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
-                  Icon(widget.cardInfo.icon, color: Colors.white.withOpacity(0.8), size: 22),
+                  Text(widget.cardInfo.title, style: const TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16)),
+                  Icon(widget.cardInfo.icon, color: textColor.withOpacity(0.8), size: 22),
                 ],
               ),
               if (count != null)
                 Text(
                   '$count Tasks',
                   style: TextStyle(
-                      color: Colors.white.withOpacity(0.9),
+                      color: textColor.withOpacity(0.9),
                       fontSize: 14,
                       fontWeight: FontWeight.w500),
                 )
@@ -209,7 +212,7 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
                   width: 14,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
-                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.8)),
+                    valueColor: AlwaysStoppedAnimation<Color>(textColor.withOpacity(0.8)),
                   ),
                 ),
             ],
