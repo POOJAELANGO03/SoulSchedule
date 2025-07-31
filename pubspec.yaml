@@ -32,5 +32,12 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+<<<<<<< HEAD
   assets:
     - assets/images/google_signlogo.png
+=======
+
+  assets:
+    - assets/images/google_signlogo.png
+
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0

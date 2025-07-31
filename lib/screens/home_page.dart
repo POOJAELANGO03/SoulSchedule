@@ -2,7 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:speechtotext/screens/auth_service.dart';
 import 'package:speechtotext/screens/task_list_page.dart';
+<<<<<<< HEAD
 import 'package:speechtotext/screens/speech_to_text.dart';
+=======
+
+// Note: The import for TaskFormPage is no longer needed here
+// import 'package:speechtotext/screens/speech_to_text.dart';
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
 
 class StatusCardInfo {
   final String title;
@@ -61,6 +67,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+<<<<<<< HEAD
       appBar: AppBar(
         title: const Text('Home'),
         actions: [
@@ -74,6 +81,14 @@ class _HomePageState extends State<HomePage> {
             },
           ),
         ],
+=======
+      // The AppBar now correctly inherits its style from the theme in main.dart
+      appBar: AppBar(
+        title: const Text('Home'),
+        // The redundant '+' button in the actions list has been removed.
+        // The main '+' button is the FloatingActionButton in main_scaffold.dart
+        actions: const [],
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
       ),
       body: RefreshIndicator(
         onRefresh: () async => setState(() {}),
@@ -92,11 +107,20 @@ class _HomePageState extends State<HomePage> {
                 builder: (context, snapshot) {
                   final Map<String, int>? counts = snapshot.data;
 
+<<<<<<< HEAD
                   final cardData = [
                     StatusCardInfo(title: 'To Do', icon: Icons.pending_actions, color: const Color(0xFF8BA9D8), count: counts?['To Do']),
                     StatusCardInfo(title: 'In Progress', icon: Icons.sync, color: const Color(0xFF8A7B94), count: counts?['In Progress']),
                     StatusCardInfo(title: 'Done', icon: Icons.check_circle, color: const Color(0xFF99B89A), count: counts?['Done']),
                     StatusCardInfo(title: 'Deleted', icon: Icons.delete_forever, color: const Color(0xFFD48E8E), count: counts?['Deleted'], isArchived: true),
+=======
+                  // --- CHANGE 1: Updated to a new mild color palette ---
+                  final cardData = [
+                    StatusCardInfo(title: 'To Do', icon: Icons.pending_actions, color: const Color(0xFFAEC6CF), count: counts?['To Do']),
+                    StatusCardInfo(title: 'In Progress', icon: Icons.sync, color: const Color(0xFFFFDAB9), count: counts?['In Progress']),
+                    StatusCardInfo(title: 'Done', icon: Icons.check_circle, color: const Color(0xFFB9E2A8), count: counts?['Done']),
+                    StatusCardInfo(title: 'Deleted', icon: Icons.delete_forever, color: const Color(0xFFFFB6C1), count: counts?['Deleted'], isArchived: true),
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
                   ];
 
                   return GridView.builder(
@@ -165,6 +189,11 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
   @override
   Widget build(BuildContext context) {
     final count = widget.cardInfo.count;
+<<<<<<< HEAD
+=======
+    // --- CHANGE 2: Text and icon color changed to dark gray for readability ---
+    const Color textColor = Color(0xFF37474F);
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
 
     return GestureDetector(
       onTapDown: (_) => _onPress(true),
@@ -196,15 +225,24 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+<<<<<<< HEAD
                   Text(widget.cardInfo.title, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 16)),
                   Icon(widget.cardInfo.icon, color: Colors.white.withOpacity(0.8), size: 22),
+=======
+                  Text(widget.cardInfo.title, style: const TextStyle(color: textColor, fontWeight: FontWeight.bold, fontSize: 16)),
+                  Icon(widget.cardInfo.icon, color: textColor.withOpacity(0.8), size: 22),
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
                 ],
               ),
               if (count != null)
                 Text(
                   '$count Tasks',
                   style: TextStyle(
+<<<<<<< HEAD
                       color: Colors.white.withOpacity(0.9),
+=======
+                      color: textColor.withOpacity(0.9),
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
                       fontSize: 14,
                       fontWeight: FontWeight.w500),
                 )
@@ -214,7 +252,11 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
                   width: 14,
                   child: CircularProgressIndicator(
                     strokeWidth: 2,
+<<<<<<< HEAD
                     valueColor: AlwaysStoppedAnimation<Color>(Colors.white.withOpacity(0.8)),
+=======
+                    valueColor: AlwaysStoppedAnimation<Color>(textColor.withOpacity(0.8)),
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
                   ),
                 ),
             ],
@@ -223,4 +265,8 @@ class _InteractiveStatusCardState extends State<InteractiveStatusCard> {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0

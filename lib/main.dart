@@ -3,9 +3,15 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:speechtotext/screens/login_page.dart';
+<<<<<<< HEAD
 import 'package:speechtotext/screens/main_scaffold.dart';
 // The import for splashScreen is no longer needed.
 
+=======
+// --- THIS LINE HAS BEEN FIXED ---
+import 'package:speechtotext/screens/main_scaffold.dart';
+// ---------------------------------
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
 import 'firebase_options.dart';
 
 void main() async {
@@ -27,7 +33,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFC4E1E6)),
         scaffoldBackgroundColor: const Color(0xFFF7F8F9),
         appBarTheme: const AppBarTheme(
+<<<<<<< HEAD
           backgroundColor: Colors.black,
+=======
+          backgroundColor: Color(0xFF1976D2), // Changed from Colors.black
+>>>>>>> 9e9cfc30ef04b1e10d6c5933f99b029e7b0d7ee0
           foregroundColor: Colors.white,
           elevation: 0,
           centerTitle: true,
